@@ -113,6 +113,8 @@ GameObject:
   - component: {fileID: 2206498002074881988}
   - component: {fileID: 5015080729174342535}
   - component: {fileID: 4674718327264820797}
+  - component: {fileID: 5465047641748205986}
+  - component: {fileID: 6421815544216682244}
   m_Layer: 0
   m_Name: Skeleton
   m_TagString: Enemy
@@ -209,6 +211,35 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5465047641748205986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547950208660390789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fa415b9a1e2faa48b35be30a7d39ab9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: 5
+  _speed: 5
+  _damage: 1
+--- !u!114 &6421815544216682244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547950208660390789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4fc3309144e98446b95bdfa143eaf35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthSlider: {fileID: 3912847263731385726}
+  _skeleton: {fileID: 5465047641748205986}
 --- !u!1 &4120928964628707572
 GameObject:
   m_ObjectHideFlags: 0
@@ -331,7 +362,7 @@ GameObject:
   - component: {fileID: 5789791557344769372}
   - component: {fileID: 3912847263731385726}
   m_Layer: 0
-  m_Name: HealthBar
+  m_Name: '[Slider] HealthBar'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
