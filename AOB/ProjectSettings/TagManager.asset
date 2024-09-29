@@ -12,7 +12,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Enemy
   - 
   - 
   - 
@@ -47,4 +47,7 @@ TagManager:
     locked: 0
   - name: Enemy
     uniqueID: 74034783
+    locked: 0
+  - name: Tower
+    uniqueID: 772186803
     locked: 0

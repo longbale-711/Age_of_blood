@@ -9,7 +9,6 @@ public class SkeletonAnimationController : MonoBehaviour
     private const string DIE = "Die";
 
     [SerializeField] private Animator _animator;
-    [SerializeField] private int _waitTimePlayAnimation = 1;
 
     public void PlayDyingAnim(Action onAnimCompleted = null)
     {

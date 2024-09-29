@@ -28,14 +28,16 @@ public class SkeletonPresent : MonoBehaviour
         _skeletonController = new SkeletonController(this, _skeleton);
         _skeletonAnimationController = GetComponent<SkeletonAnimationController>();
 
+        // Subscribe event listener
+        _skeleton.OnHealthChange += UpdateHealthValue;
+        _skeletonController.OnDying += Die;
+    }
+    private void OnEnable()
+    {
         // Set default values
         _healthSlider.maxValue = _skeleton.Health;
         _healthSlider.value = _healthSlider.maxValue;
         _waypoints = new List<Transform>(_enemyManager.EnemyPathNode);
-
-        // Subscribe event listener
-        _skeleton.OnHealthChange += UpdateHealthValue;
-        _skeletonController.OnDying += Die;
     }
 
     private void Update()
