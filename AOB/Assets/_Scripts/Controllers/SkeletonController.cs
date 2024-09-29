@@ -15,7 +15,13 @@ public class SkeletonController
     {
         _skeletonPresent = skeletonPresent;
         _skeletonModel = skeletonModel;
+       
+    }
+
+    public void Init()
+    {
         _isDie = false;
+        _skeletonModel.ResetValue();
     }
 
     public bool IsDie() => _isDie;
@@ -23,7 +29,7 @@ public class SkeletonController
     public void Attack()
     {
         // Implement attack logic
-        Debug.Log("Attack with "+_skeletonModel.Damage+" damage !");
+        GameManager.Instance.PlayerController.TakeDamaged(_skeletonModel.Damage);
     }
 
     public void TakeDamaged(int dmgTaken)
@@ -40,7 +46,7 @@ public class SkeletonController
     {
         // Implement dying logic
         _isDie = true;
-        Debug.Log("Die");
+        _skeletonModel.ResetValue();
         OnDying?.Invoke();
 
     }

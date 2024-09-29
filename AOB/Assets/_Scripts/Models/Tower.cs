@@ -5,73 +5,11 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
-    //[SerializeField] private float _fireRate;
-    //[SerializeField] private float _radius;
-    //[SerializeField] private int _damage;
-    //[SerializeField] private int _level;
-    //[SerializeField] private Vector2Int _position;
-    //// Events
-    //public event Action<float> OnFireRateChanged;
-    //public event Action<float> OnRadiusChanged;
-    //public event Action<int> OnDamageChanged;
-    //public event Action<int> OnLevelChanged;
-    //public event Action<Vector2Int> OnPositionChanged;
-
-    //#region Getter / Setter
-    //public float FireRate
-    //{
-    //    get => _fireRate;
-    //    set
-    //    {
-    //        _fireRate = value;
-    //        OnFireRateChanged?.Invoke(value);
-    //    }
-    //}
-
-    //public float Radius
-    //{
-    //    get => _radius;
-    //    set
-    //    {
-    //        _radius = value;
-    //        OnRadiusChanged?.Invoke(value);
-    //    }
-    //}
-
-    //public int Damage
-    //{
-    //    get => _damage;
-    //    set
-    //    {
-    //        _damage = value;
-    //        OnDamageChanged?.Invoke(value);
-    //    }
-    //}
-
-    //public int Level
-    //{
-    //    get => _level;
-    //    set
-    //    {
-    //        _level = value;
-    //        OnLevelChanged?.Invoke(value);
-    //    }
-    //}
-
-    //public Vector2Int Position
-    //{
-    //    get => _position;
-    //    set
-    //    {
-    //        _position = value;
-    //        OnPositionChanged?.Invoke(value);
-    //    }
-    //}
-    //#endregion
-
     public GameObject bulletPrefab;  // The bullet prefab to instantiate
     public Transform bulletSpawnPoint; // Point from where the bullet will be spawned
     public LayerMask enemyLayer;  // Layer containing enemies
+    public int price;
+    public int damage;
     public float radius = 2f; // Radius to detect enemy
     public float shootingDelay = 1f; // Time delay between shots
     private float lastShotTime = 0f;  // Time of the last shot
@@ -107,6 +45,8 @@ public class Tower : MonoBehaviour
 
             // Set bullet's velocity towards the enemy
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+            var bulletController = bullet.GetComponent<BulletController>();
+            bulletController.Damage = damage;
             if (rb != null)
             {
                 rb.velocity = direction * bulletSpeed;

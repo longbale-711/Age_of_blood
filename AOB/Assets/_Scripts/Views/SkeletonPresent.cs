@@ -32,10 +32,12 @@ public class SkeletonPresent : MonoBehaviour
         // Subscribe event listener
         _skeleton.OnHealthChange += UpdateHealthValue;
         _skeletonController.OnDying += Die;
+        _skeletonController.Init();
     }
     private void OnEnable()
     {
         // Set default values
+        waypointIndex = 0;
         _healthSlider.maxValue = _skeleton.Health;
         _healthSlider.value = _healthSlider.maxValue;
     }
@@ -77,7 +79,6 @@ public class SkeletonPresent : MonoBehaviour
         }
     }
 
-    [ContextMenu("Attack")]
     public void Attack()
     {
         _skeletonController.Attack();
@@ -93,6 +94,7 @@ public class SkeletonPresent : MonoBehaviour
         // Return to enemy pool after play die anim completed
         _skeletonAnimationController.PlayDyingAnim(()=> { 
             _enemyManager.EnemySpawner.DespawnEnemy(gameObject);
+            GameManager.Instance.PlayerController.EarnMoney(_skeleton.GetBounty());
         });
     }
 }

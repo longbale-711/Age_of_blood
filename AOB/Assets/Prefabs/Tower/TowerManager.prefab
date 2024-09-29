@@ -45,5 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gridManager: {fileID: 0}
-  _archerTower: {fileID: 4914221793099484883, guid: 5cc1acca8fa31aa4e9e36d214c6dca58, type: 3}
-  _castleTower: {fileID: 458358814440679743, guid: 4ea72efe5fc294641af5c25fadf3f57d, type: 3}
+  _archerTower: {fileID: 5592995477075105493, guid: 5cc1acca8fa31aa4e9e36d214c6dca58, type: 3}
+  _castleTower: {fileID: 3566523799914014414, guid: 4ea72efe5fc294641af5c25fadf3f57d, type: 3}

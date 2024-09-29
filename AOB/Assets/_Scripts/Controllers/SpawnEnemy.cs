@@ -13,15 +13,31 @@ public class SpawnEnemy : MonoBehaviour
     [SerializeField] private int enemiesPerWave = 2; // Number of enemies per wave
     [SerializeField] private float timeBetweenWaves = 5f; // Time between waves
     [SerializeField] private float timeBetweenSpawns = 1f; // Time between each enemy in a wave
+    private List<GameObject> _lstEnemy;
     private int totalSpawnedEnemies = 0; // Total enemies spawned
+
 
     private void Start()
     {
+        GameManager.Instance.OnStartGame += StartGame;
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.Instance.OnStartGame -= StartGame;
+    }
+
+    private void StartGame()
+    {
+        ResetListEnemy();
+        ResetValue();
         StartSpawningEnemies().Forget();
     }
 
     private async UniTaskVoid StartSpawningEnemies()
     {
+        
+        
         while (totalSpawnedEnemies <= _maxEnemy)
         {
             await SpawnWave();
@@ -33,7 +49,7 @@ public class SpawnEnemy : MonoBehaviour
     {
         for (int i = 0; i < enemiesPerWave; i++)
         {
-            if (totalSpawnedEnemies >= 10)
+            if (totalSpawnedEnemies >= _maxEnemy)
                 break;
 
             SpawnAtPosition(_spawnPoints.position);
@@ -48,6 +64,30 @@ public class SpawnEnemy : MonoBehaviour
         GameObject enemy = _enemyPool.GetObjectFromPool(); // Get enemy from pool
         enemy.transform.position = position; // Set enemy position
         enemy.SetActive(true);
+        _lstEnemy.Add(enemy);
+    }
+
+    public void ResetValue()
+    {
+        totalSpawnedEnemies = 0;
+        timeBetweenWaves = 5f;
+        timeBetweenSpawns = 1f;
+    }
+
+    public void ResetListEnemy()
+    {
+        if (_lstEnemy == null)
+        {
+            _lstEnemy = new List<GameObject>();
+            return;
+        }
+
+        if (_lstEnemy.Count <= 0) return;
+        foreach(var enemy in _lstEnemy)
+        {
+            DespawnEnemy(enemy);
+        }
+        _lstEnemy.Clear();
     }
 
     public void DespawnEnemy(GameObject enemy)

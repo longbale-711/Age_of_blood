@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,13 +10,26 @@ public enum TowerType
 public class TowerManager : MonoBehaviour
 {
     [SerializeField] private GridManager _gridManager;
-    [SerializeField] private GameObject _archerTower;
-    [SerializeField] private GameObject _castleTower;
-    private GameObject _selectedTower;
+    [SerializeField] private Tower _archerTower;
+    [SerializeField] private Tower _castleTower;
+    private Tower _selectedTower;
+    private GameManager _manager;
+    private List<Tower> _lstTower;
+    private bool _canPlace;
 
+    private void Start()
+    {
+        _manager = GameManager.Instance;
+        _gridManager = _manager.GridManager;
+        _manager.PlayerController.OnPurchaseTowerCompleted += SetSelectedTower;
+        _manager.OnStartGame += ConfigStartGame;
+    }
+
+    
 
     void Update()
     {
+        if (!_canPlace) return;
 #if UNITY_EDITOR
         if (Input.GetMouseButtonDown(0))
         {
@@ -35,7 +49,18 @@ public class TowerManager : MonoBehaviour
 #endif
     }
 
-    void PlaceTower(Vector3 cursorPos)
+    private void OnDestroy()
+    {
+        _manager.PlayerController.OnPurchaseTowerCompleted -= SetSelectedTower;
+        _manager.OnStartGame -= ConfigStartGame;
+    }
+
+    private void ConfigStartGame()
+    {
+        ResetValue();
+    }
+
+    public void PlaceTower(Vector3 cursorPos)
     {
         if (_selectedTower == null) return;
         Vector3 touchWorldPos = Camera.main.ScreenToWorldPoint(cursorPos);
@@ -46,25 +71,50 @@ public class TowerManager : MonoBehaviour
             return;
         }
 
-        SpawnTower(cellPos);
+        SpawnTower(cellPos,()=> SetSelectedTower(null));
     }
 
-    public void SpawnTower(Vector3Int tilePosition)
+    public void SpawnTower(Vector3Int tilePosition,Action onSpawnCompleted = null)
     {
         var position = _gridManager.GetTileCenterPosition(tilePosition);
-        Instantiate(_selectedTower, position, Quaternion.identity);
-        _selectedTower = null;
+        var tower = Instantiate(_selectedTower, position, Quaternion.identity);
+        _lstTower.Add(tower);
+        onSpawnCompleted?.Invoke();
+    }
+
+    public Tower SelectTower(TowerType type)
+    {
+        return type == TowerType.Archer ? _archerTower : _castleTower;
+    }
+
+    public Tower GetSelectedTower() => _selectedTower;
+
+    private void SetSelectedTower(Tower tower)
+    {
+        _selectedTower = tower;
+        _canPlace = _selectedTower != null;
+    }
+
+    private void ResetValue()
+    {
+        SetSelectedTower(null);
+        ResetListTower();
 
     }
 
-    public void SelectTower(int type)
+    private void ResetListTower()
     {
-        if (_selectedTower != null) return;
-        _selectedTower = type == 1 ? _archerTower : _castleTower;
-    }
+        if (_lstTower == null)
+        {
+            _lstTower = new List<Tower>();
+            return;
+        }
 
-    public GameObject GetTower()
-    {
-        return _selectedTower;
+        if (_lstTower.Count <= 0) return;
+        foreach (var tower in _lstTower)
+        {
+            Destroy(tower.gameObject);
+        }
+        _lstTower.Clear();
     }
 }
