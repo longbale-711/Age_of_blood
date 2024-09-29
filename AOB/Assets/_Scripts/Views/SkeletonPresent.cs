@@ -27,6 +27,7 @@ public class SkeletonPresent : MonoBehaviour
         _enemyManager = EnemyManager.Instance;
         _skeletonController = new SkeletonController(this, _skeleton);
         _skeletonAnimationController = GetComponent<SkeletonAnimationController>();
+        _waypoints = new List<Transform>(_enemyManager.EnemyPathNode);
 
         // Subscribe event listener
         _skeleton.OnHealthChange += UpdateHealthValue;
@@ -37,7 +38,6 @@ public class SkeletonPresent : MonoBehaviour
         // Set default values
         _healthSlider.maxValue = _skeleton.Health;
         _healthSlider.value = _healthSlider.maxValue;
-        _waypoints = new List<Transform>(_enemyManager.EnemyPathNode);
     }
 
     private void Update()
@@ -83,10 +83,9 @@ public class SkeletonPresent : MonoBehaviour
         _skeletonController.Attack();
     }
 
-    [ContextMenu("Take Damaged")]
-    public void TakeDamaged()
+    public void TakeDamaged(int dmgTaken)
     {
-        _skeletonController.TakeDamaged(1);
+        _skeletonController.TakeDamaged(dmgTaken);
     }
 
     private void Die()
